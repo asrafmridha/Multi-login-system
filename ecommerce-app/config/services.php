@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'foodpanda' => [
+        'url' => env('FOODPANDA_APPLICATION_URL'),
+    ],
 
 ];

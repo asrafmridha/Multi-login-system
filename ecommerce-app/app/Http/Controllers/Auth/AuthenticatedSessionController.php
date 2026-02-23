@@ -29,10 +29,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        $token = $tokenService->generateAccessToken(auth()->user());
-
-        return redirect(config('services.foodpanda.url') . '/sso-login?token=' . $token);
+        return redirect()->intended(route('dashboard'));
     }
 
     /**

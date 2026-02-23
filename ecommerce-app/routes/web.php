@@ -9,7 +9,23 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
+Route::get('/generate-sso-token', function (\App\Services\SingleSignOnTokenService $service) {
+
+    if (!auth()->check()) {
+        return redirect('/login');
+    }
+
+    $token = $service->generateAccessToken(auth()->user());
+
+    return redirect(
+        config('services.foodpanda.url')
+            . '/sso-login?token='
+            . $token
+    );
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -17,4 +33,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
